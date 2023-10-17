@@ -16,7 +16,8 @@ const TodoList = () => {
 const [todos, setTodos] = React.useState([]);
 const {  user } = useAuth();
 const toast = useToast();
-const refreshData = () => {
+
+useEffect(() => {
 if (!user) {
 setTodos([]);
 return;
@@ -29,9 +30,6 @@ ar.push({ id: doc.id, ...doc.data() });
 });
 setTodos(ar);
 });
-};
-useEffect(() => {
-refreshData();
 }, [user]);
 const handleTodoDelete = async (id) => {
 if (confirm("Are you sure you wanna delete this todo?")) {
