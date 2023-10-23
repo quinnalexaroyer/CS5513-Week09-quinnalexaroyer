@@ -1,0 +1,13 @@
+2023/10/14 15:00:30 Micro started
+2023/10/14 15:00:46 real runtime file prolog
+2023/10/14 15:00:52 real runtime file prolog
+2023/10/14 15:01:02 real runtime file prolog
+2023/10/14 15:01:08 real runtime file prolog
+2023/10/14 15:01:14 real runtime file prolog
+2023/10/14 15:01:25 real runtime file prolog
+2023/10/14 15:10:56 real runtime file prolog
+2023/10/14 15:11:38 real runtime file prolog
+2023/10/14 15:13:30 real runtime file prolog
+2023/10/14 15:15:52 real runtime file prolog
+2023/10/14 16:01:48 real runtime file prolog
+2023/10/14 16:08:45 real runtime file prolog

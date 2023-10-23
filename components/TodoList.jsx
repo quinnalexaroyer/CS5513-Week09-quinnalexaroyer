@@ -5,6 +5,7 @@ Heading,
 SimpleGrid,
 Text,
 useToast,
+Link
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
@@ -58,7 +59,7 @@ transition="0.2s"
 _hover={{ boxShadow: "sm" }}
 >
 <Heading as="h3" fontSize={"xl"}>
-{todo.title}{" "}
+<Link href={`todo/${todo.id}`}>{todo.title}{" "}</Link>
 <Badge
 color="red.500"
 bg="inherit"

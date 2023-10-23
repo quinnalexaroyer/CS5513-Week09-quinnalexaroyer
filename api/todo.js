@@ -77,4 +77,16 @@ const getDailySchedule = async ({date}) => {
   	console.log(err);
   }
 }
-export { addTodo, toggleTodoStatus, deleteTodo, addSchedule, deleteSchedule };
+
+function tense(date, startTime, endTime) {
+  var today = getToday();
+  if(date < today) return "past";
+  else if(date > today) return "future";
+  else {
+    var time = getTime();
+    if(endTime < time) return "past";
+    else if(startTime > time) return "future";
+    else return "present";
+  }
+}
+export { addTodo, toggleTodoStatus, deleteTodo, addSchedule, deleteSchedule, tense };
