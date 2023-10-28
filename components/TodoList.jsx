@@ -23,7 +23,7 @@ if (!user) {
 setTodos([]);
 return;
 }
-  const q = query(collection(db, "contact"),
+  const q = query(collection(db, "todo"),
     where("user", "==", user.uid)
   );
   onSnapshot(q, (querySnapchot) => {
@@ -32,11 +32,11 @@ return;
       console.log(doc.data());
       ar.push({ id: doc.id, ...doc.data() });
     });
-  setContacts(ar);
+  setTodos(ar);
 });
 }, [user]);
 const handleTodoDelete = async (id) => {
-if (confirm("Are you sure you wanna delete this todo?")) {
+if (confirm("Are you sure you want to delete this todo?")) {
 deleteTodo(id);
 toast({ title: "Todo deleted successfully", status: "success" });
 }

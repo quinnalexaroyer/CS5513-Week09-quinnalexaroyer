@@ -9,7 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
-import { addSchedule } from "../api/todo";
+import { addEvent } from "../api/todo";
 import { getToday, getTime } from "../api/todo";
 const AddEvent = () => {
   const [title, setTitle] = React.useState("");
@@ -20,7 +20,7 @@ const AddEvent = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast();
   const { isLoggedIn, user } = useAuth();
-  const handleScheduleCreate = async () => {
+  const handleEventCreate = async () => {
     if (!isLoggedIn) {
       toast({
         title: "You must be logged in to create a todo",
@@ -31,7 +31,7 @@ const AddEvent = () => {
       return;
     }
     setIsLoading(true);
-    const schedule = {
+    const event = {
       userId:user.uid,
       title,
       description,
@@ -39,13 +39,13 @@ const AddEvent = () => {
       start,
       end
     }
-    await addSchedule(schedule);
+    await addEvent(event);
     setTitle("");
     setDescription("");
     setDate("");
     setStart("");
     setEnd("");
-    toast({ title: "Schedule item created successfully", status: "success" });
+    toast({ title: "Event created successfully", status: "success" });
   }
   return (
     <Box w="40%" margin={"0 auto"} display="block" mt={5}>
@@ -76,7 +76,7 @@ const AddEvent = () => {
       onChange={(e) => setEnd(e.target.value)}
     />
     <Button
-      onClick={() => handleScheduleCreate()}
+      onClick={() => handleEventCreate()}
       disabled={title.length < 1 || description.length < 1 || isLoading}
       colorScheme="teal"
       variant="solid"

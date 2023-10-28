@@ -15,6 +15,7 @@ const AddContact = () => {
   const [relation, setRelation] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast();
   const { isLoggedIn, user } = useAuth();
   const handleContactCreate = async () => {
@@ -41,7 +42,6 @@ setName("");
 setRelation("");
 setEmail("");
 setPhone("");
-setStatus("pending");
 toast({ title: "Contact created successfully", status: "success" });
 };
 return (
@@ -50,27 +50,27 @@ return (
 <Input
 placeholder="Name"
 value={name}
-onChange={(e) => setTitle(e.target.value)}
+onChange={(e) => setName(e.target.value)}
 />
 <Input
 placeholder="Relation"
 value={relation}
-onChange={(e) => setDescription(e.target.value)}
+onChange={(e) => setRelation(e.target.value)}
 />
 <Input
 placeholder="Email"
 value={email}
-onChange={(e) => setTitle(e.target.value)}
+onChange={(e) => setEmail(e.target.value)}
 />
 <Input
 placeholder="Phone"
 value={phone}
-onChange={(e) => setDescription(e.target.value)}
+onChange={(e) => setPhone(e.target.value)}
 />
 
 <Button
 onClick={() => handleContactCreate()}
-disabled={title.length < 1 || description.length < 1 || isLoading}
+disabled={name.length < 1 || (email.length < 1 && phone.length < 1) || isLoading}
 colorScheme="teal"
 variant="solid"
 >

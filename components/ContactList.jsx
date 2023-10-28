@@ -12,7 +12,7 @@ import useAuth from "../hooks/useAuth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { FaTrash } from "react-icons/fa";
-import { deleteContact, toggleContactStatus } from "../api/contact";
+import { deleteContact } from "../api/todo";
 const ContactList = () => {
 const [contacts, setContacts] = React.useState([]);
 const {  user } = useAuth();
@@ -22,7 +22,7 @@ useEffect(() => {
     setContacts([]);
       return;
   }
-  const q = query(collection(db, "contact"),
+  const q = query(collection(db, "contacts"),
     where("user", "==", user.uid)
   );
   onSnapshot(q, (querySnapchot) => {

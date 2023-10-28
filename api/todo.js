@@ -92,4 +92,4 @@ function tense(date, startTime, endTime) {
     else return "present";
   }
 }
-export { addTodo, toggleTodoStatus, deleteTodo, addSchedule, deleteSchedule, tense };
+export { addTodo, toggleTodoStatus, deleteTodo, addEvent, deleteEvent, addContact, deleteContact, tense };
