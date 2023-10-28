@@ -12,7 +12,7 @@ import {
     doc,
     getDoc
 } from "firebase/firestore";
-import { db } from "../../firebase";
+import { getFromDB } from "../../firebase";
 import {tense} from "../../api/todo";
 
 const ScheduleItem = ({d}) => {
@@ -50,15 +50,7 @@ const ScheduleItem = ({d}) => {
 };
 
 export async function getServerSideProps(context) {
-  const item = doc(db, 'schedule', context.params.id);
-  const itemSnap = await getDoc(item);
-  if(itemSnap.exists()) {
-    let d = itemSnap.data();
-    d.tense = tense(d.date, d.start, d.end);
-    return {props: {d}};
-  } else {
-    return {props: null};
-  }
+  return await getFromDB("events", context.params.id);
 }
 
 export default ScheduleItem;

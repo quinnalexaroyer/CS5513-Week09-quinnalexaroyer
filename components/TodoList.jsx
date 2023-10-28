@@ -23,13 +23,16 @@ if (!user) {
 setTodos([]);
 return;
 }
-const q = query(collection(db, "todo"), where("user", "==", user.uid));
-onSnapshot(q, (querySnapchot) => {
-let ar = [];
-querySnapchot.docs.forEach((doc) => {
-ar.push({ id: doc.id, ...doc.data() });
-});
-setTodos(ar);
+  const q = query(collection(db, "contact"),
+    where("user", "==", user.uid)
+  );
+  onSnapshot(q, (querySnapchot) => {
+    let ar = [];
+    querySnapchot.docs.forEach((doc) => {
+      console.log(doc.data());
+      ar.push({ id: doc.id, ...doc.data() });
+    });
+  setContacts(ar);
 });
 }, [user]);
 const handleTodoDelete = async (id) => {

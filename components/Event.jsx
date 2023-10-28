@@ -13,25 +13,25 @@ import useAuth from "../hooks/useAuth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
-import { addSchedule, deleteSchedule, tense } from "../api/todo";
+import { addEvent, deleteEvent, tense } from "../api/todo";
 
 function getTodaysString() {
-  var today = new Date().toISOString();
+  var today = new Event().toISOString();
   return today.slice(0,4) + today.slice(5,7) + today.slice(8,10);
 }
 
-const Schedule = () => {
-  const [date, setSchedule] = React.useState(); // 14:00 #2
+const Event = () => {
+  const [event, setEvent] = React.useState(); // 14:00 #2
   const {  user } = useAuth();
   const toast = useToast();
   const refreshData = () => {
     if (!user) {
       return;
     }
-    if(!date) {
-      setSchedule([]);
+    if(!event) {
+      setEvent([]);
     }
-    const q = query(collection(db, "schedule"),
+    const q = query(collection(db, "event"),
       where("user", "==", user.uid)
     );
     onSnapshot(q, (querySnapchot) => {
@@ -45,21 +45,21 @@ const Schedule = () => {
           return x.date + x.start > y.date + y.start;
         }
       );
-      setSchedule(ar);
+      setEvent(ar);
       });
     };
     useEffect(() => {
       refreshData();
     }, [user]);
-    const handleScheduleDelete = async (id) => {
-      if (confirm("Are you sure you wanna delete this item?")) {
-      deleteSchedule(id);
+    const handleEventDelete = async (id) => {
+      if (confirm("Are you sure you want to delete this item?")) {
+      deleteEvent(id);
       toast({ title: "Item deleted successfully", status: "success" });
     }
   };
   return (
     <SimpleGrid columns={{base:1, md:1}} spacing={8}>
-    {date && date.map((d) => (
+    {event && event.map((d) => (
     <Box
       p={3}
       boxShadow="2xl"
@@ -68,7 +68,7 @@ const Schedule = () => {
       _hover={{ boxShadow: "sm" }}
     >
     <Heading as="h3" fontSize={"xl"}>
-      <Link href={`schedule/${d.id}`}>{d.title}{" "}</Link><br/>
+      <Link href={`event/${d.id}`}>{d.title}{" "}</Link><br/>
       {d.date}: {d.start}-{d.end}
 <Badge
 color="red.500"
@@ -80,7 +80,7 @@ transform: "scale(1.2)",
 }}
 float="right"
 size="xs"
-onClick={() => handleScheduleDelete(d.id)}
+onClick={() => handleEventDelete(d.id)}
 >
 <FaTrash />
 </Badge>
@@ -94,7 +94,7 @@ onClick={() => handleScheduleDelete(d.id)}
         }}
         float="right"
         size="xs"
-        onClick={() => showSchedule(item)}
+        onClick={() => showEvent(item)}
       >
       <Text>{d.tense}</Text>
       </Badge>
@@ -105,5 +105,5 @@ onClick={() => handleScheduleDelete(d.id)}
   </SimpleGrid>
 );
 };
-export default Schedule;
+export default Event;
 

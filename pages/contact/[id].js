@@ -35,7 +35,7 @@ const ToDoItem = ({d}) => {
 };
 
 export async function getServerSideProps(context) {
-  return await getFromDB("todo", context.params.id);
+  return await getFromDB("contacts", context.params.id);
 }
 
 export default ToDoItem;
