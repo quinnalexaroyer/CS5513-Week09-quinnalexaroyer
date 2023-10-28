@@ -11,7 +11,7 @@ import {
 import useAuth from "../hooks/useAuth";
 import { addSchedule } from "../api/todo";
 import { getToday, getTime } from "../api/todo";
-const AddSchedule = () => {
+const AddEvent = () => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [date, setDate] = React.useState();
@@ -87,5 +87,5 @@ Add
 </Box>
 );
 };
-export default AddSchedule;
+export default AddEvent;
 

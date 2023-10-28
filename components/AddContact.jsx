@@ -9,7 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
-import { addContact } from "../api/contact";
+import { addContact } from "../api/todo";
 const AddContact = () => {
   const [name, setName] = React.useState("");
   const [relation, setRelation] = React.useState("");

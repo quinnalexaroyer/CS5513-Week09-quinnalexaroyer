@@ -1,10 +1,12 @@
-import { Link } from from "@chakra-ui/react";
+import { Link, Text, Box } from "@chakra-ui/react";
 
 const NavBar = () => { return (
-  [ <Link href="/">Todo</Link> 
-  | <Link href="/events">Events</Link> 
-  | <Link href="/contacts">Contacts</Link> 
-  ]
+  <Box mt={15}>
+  <Text>[ <Link href={`/`}>Todo</Link> 
+  &nbsp;| <Link href={`/events`}>Events</Link> 
+  &nbsp;| <Link href={`/contacts`}>Contacts</Link> 
+  &nbsp;]</Text>
+  </Box>
 );}
 
 export default NavBar;

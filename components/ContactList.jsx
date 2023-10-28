@@ -35,11 +35,10 @@ useEffect(() => {
 });
 }, [user]);
 const handleContactDelete = async (id) => {
-if (confirm("Are you sure you wanna delete this contact?")) {
+if (confirm("Are you sure you want to delete this contact?")) {
 deleteContact(id);
 toast({ title: "Contact deleted successfully", status: "success" });
 }
-};
 };
 return (
 <Box mt={5}>

@@ -23,6 +23,7 @@ const addTodo = async ({ userId, title, description, status }) => {
       description: description,
       status: status,
       createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime()
     });
   }
   catch (err) {
@@ -39,45 +40,47 @@ const toggleTodoStatus = async ({ docId, status }) => {
     console.log(err);
   }
 };
-const deleteTodo = async (docId) => {
+const deleteFromDB = async (collection, docId) => {
   try {
-    const todoRef = doc(db, "todo", docId);
+    const todoRef = doc(db, collection, docId);
     await deleteDoc(todoRef);
   } catch (err) {
     console.log(err);
   }
 };
-const addSchedule = async ({ userId, title, description, date, start, end}) => {
-  await addDoc(collection(db, "schedule"), {
+
+const deleteTodo = async (docId) => {
+  await deleteFromDB("todo", docId);
+};
+const addEvent = async ({ userId, title, description, date, start, end}) => {
+  await addDoc(collection(db, "events"), {
     user: userId,
     title: title,
     description: description,
     date: date,
     start: start,
     end: end,
-    createdAt: new Date().getTime()
+    createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime()
   });
 }
-const deleteSchedule = async (docId) => {
-  try {
-    const ref = doc(db, "schedule", docId);
-    await deleteDoc(ref);
-  } catch (err) {
-    console.log(err);
-  }
+const deleteEvent = async (docId) => {
+  await deleteFromDB("events", docId);
 }
-const getDailySchedule = async ({date}) => {
-  try {
-    var endDate = new Date(date.getTime());
-    endDate.setDate(endDate.getDate() + 1);
-  	var ref = firebase.database().ref("schedule");
-  	ref.orderByChild("datetime").startAt(date).endAt(endDate);
-  	return ref;
-  } catch (err) {
-  	console.log(err);
-  }
+const addContact = async ({ userId, name, relation, email, phone}) => {
+  await addDoc(collection(db, "contacts"), {
+    user: userId,
+    name: name,
+    relation: relation,
+    email: email,
+    phone: phone,
+    createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime()
+  });
 }
-
+const deleteContact = async (docId) => {
+  await deleteFromDB("contacts", docId);
+}
 function tense(date, startTime, endTime) {
   var today = getToday();
   if(date < today) return "past";
