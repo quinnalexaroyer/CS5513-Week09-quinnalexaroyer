@@ -1,5 +1,5 @@
 import { Container, Heading } from "@chakra-ui/react";
-import AddTodo from "../components/AddTodo";
+import EditTodo from "../components/AddTodo";
 import Auth from "../components/Auth";
 import TodoList from "../components/TodoList";
 import NavBar from "../components/NavBar";
@@ -9,7 +9,7 @@ return (
 <Container maxW="7xl">
 <NavBar />
 <Auth />
-<AddTodo />
+<EditTodo />
 <TodoList />
 </Container>
 );

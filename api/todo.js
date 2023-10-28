@@ -1,4 +1,5 @@
-import { db } from "../firebase";
+import { db, getFromDB } from "../firebase";
+import useAuth from "../hooks/useAuth";
 import {
   collection,
   addDoc,
@@ -6,6 +7,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+
 function getToday() {
   var today = new Date().toISOString();
   return today.slice(0,4) + today.slice(5,7) + today.slice(8,10);
@@ -51,16 +53,19 @@ const deleteFromDB = async (collection, docId) => {
 const deleteTodo = async (docId) => {
   await deleteFromDB("todo", docId);
 };
-const editTodo = async ({ docId, userId, title, description, status }) => {
-  const item = await getFromDB("todo", context.params.id);
-  if(userId == item.user) {
+const editTodo = async ({ docId, userId, title, description,status }) => {
+  console.log("BBBBBBBBBB", docId, userId, title, description,status );
+  const item = await getFromDB("todo", docId);
+  console.log("GGGGGGGGGGGG", userId, item.props.d.user);
+  if(userId == item.props.d.user) {
     await updateDoc(doc(db, "todo", docId), {
       title: title,
       description: description,
+      status: status,
       updatedAt: new Date().getTime()
     });
   }
-}
+};
 const addEvent = async ({ userId, title, description, date, start, end}) => {
   await addDoc(collection(db, "events"), {
     user: userId,
@@ -101,4 +106,4 @@ function tense(date, startTime, endTime) {
     else return "present";
   }
 }
-export { addTodo, toggleTodoStatus, deleteTodo, addEvent, deleteEvent, addContact, deleteContact, tense };
+export { addTodo, toggleTodoStatus, deleteTodo, editTodo, addEvent, deleteEvent, addContact, deleteContact, tense };

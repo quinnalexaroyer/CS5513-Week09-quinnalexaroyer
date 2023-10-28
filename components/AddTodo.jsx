@@ -8,10 +8,10 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { addTodo, editTodo } from "../api/todo";
 const EditTodo = (props) => {
+  console.log("CCCCCCCCC", props);
   if(Object.keys(props).length === 0) {
     props = {title:"", description:"", status:"pending"};
   }
@@ -42,15 +42,14 @@ if (!isLoggedIn) {
 setIsLoading(true);
 if('user' in props) {
   const todo = {
-    docId:props.id,
-    userId:props.user,
     title,
     description,
+    status,
+    docId:props.docId,
+    userId:props.user
   };
   await editTodo(todo);
   setIsLoading(false);
-  const navigate = useNavigate();
-  navigate("/");
 } else {
   const todo = {
     title,
@@ -105,4 +104,4 @@ Submit
 </Box>
 );
 };
-export default AddTodo;
+export default EditTodo;

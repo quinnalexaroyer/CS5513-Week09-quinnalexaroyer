@@ -41,10 +41,6 @@ deleteTodo(id);
 toast({ title: "Todo deleted successfully", status: "success" });
 }
 };
-const handleTodoEdit = async (id) => {
-editTodo(id);
-toast({ title: "Todo edited successfully", status: "success" });
-};
 const handleToggle = async (id, status) => {
 const newStatus = status == "completed" ? "pending" : "completed";
 await toggleTodoStatus({ docId: id, status: newStatus });
@@ -66,21 +62,10 @@ transition="0.2s"
 _hover={{ boxShadow: "sm" }}
 >
 <Heading as="h3" fontSize={"xl"}>
-<Link href={`todo/${todo.id}`}>{todo.title}{" "}</Link>
-<Badge
-color="red.500"
-bg="inherit"
-transition={"0.2s"}
-_hover={{
-bg: "inherit",
-transform: "scale(1.2)",
-}}
-float="right"
-size="xs"
-onClick={() => handleTodoEdit(todo.id)}
->
+<Link href={`/todo/${todo.id}`}>{todo.title}{" "}</Link>
+<Link float="right" href={`/edit/todo/${todo.id}`}>
 <FaEdit />
-</Badge>
+</Link>
 <Badge
 color="red.500"
 bg="inherit"
