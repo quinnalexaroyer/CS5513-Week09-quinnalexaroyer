@@ -11,8 +11,8 @@ import React, { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebase";
-import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
-import { deleteTodo, toggleTodoStatus } from "../api/todo";
+import { FaToggleOff, FaToggleOn, FaTrash, FaEdit } from "react-icons/fa";
+import { deleteTodo, toggleTodoStatus, editTodo } from "../api/todo";
 const TodoList = () => {
 const [todos, setTodos] = React.useState([]);
 const {  user } = useAuth();
@@ -41,6 +41,10 @@ deleteTodo(id);
 toast({ title: "Todo deleted successfully", status: "success" });
 }
 };
+const handleTodoEdit = async (id) => {
+editTodo(id);
+toast({ title: "Todo edited successfully", status: "success" });
+};
 const handleToggle = async (id, status) => {
 const newStatus = status == "completed" ? "pending" : "completed";
 await toggleTodoStatus({ docId: id, status: newStatus });
@@ -63,6 +67,20 @@ _hover={{ boxShadow: "sm" }}
 >
 <Heading as="h3" fontSize={"xl"}>
 <Link href={`todo/${todo.id}`}>{todo.title}{" "}</Link>
+<Badge
+color="red.500"
+bg="inherit"
+transition={"0.2s"}
+_hover={{
+bg: "inherit",
+transform: "scale(1.2)",
+}}
+float="right"
+size="xs"
+onClick={() => handleTodoEdit(todo.id)}
+>
+<FaEdit />
+</Badge>
 <Badge
 color="red.500"
 bg="inherit"

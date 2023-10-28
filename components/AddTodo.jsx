@@ -8,12 +8,16 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { addTodo } from "../api/todo";
-const AddTodo = () => {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [status, setStatus] = React.useState("pending");
+import { addTodo, editTodo } from "../api/todo";
+const EditTodo = (props) => {
+  if(Object.keys(props).length === 0) {
+    props = {title:"", description:"", status:"pending"};
+  }
+  const [title, setTitle] = React.useState(props.title);
+  const [description, setDescription] = React.useState(props.description);
+  const [status, setStatus] = React.useState(props.status);
   const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast();
   const { isLoggedIn, user } = useAuth();
@@ -26,21 +30,42 @@ if (!isLoggedIn) {
   isClosable: true,
   });
   return;
+} else if('user' in props && props.user != user.uid) {
+  toast({
+  title: "You cannot edit a todo belonging to another user",
+  status: "error",
+  duration: 9000,
+  isClosable: true,
+  });
+  return;
 }
 setIsLoading(true);
-const todo = {
-  title,
-  description,
-  status,
-  userId:user.uid
+if('user' in props) {
+  const todo = {
+    docId:props.id,
+    userId:props.user,
+    title,
+    description,
+  };
+  await editTodo(todo);
+  setIsLoading(false);
+  const navigate = useNavigate();
+  navigate("/");
+} else {
+  const todo = {
+    title,
+    description,
+    status,
+    userId:user.uid
+  };
+  await addTodo(todo);
+  setIsLoading(false);
+  setTitle("");
+  setDescription("");
+  setStatus("pending");
+  toast({ title: "Todo created successfully", status: "success" });
 };
-await addTodo(todo);
-setIsLoading(false);
-setTitle("");
-setDescription("");
-setStatus("pending");
-toast({ title: "Todo created successfully", status: "success" });
-};
+}
 return (
 <Box w="40%" margin={"0 auto"} display="block" mt={5}>
 <Stack direction="column">
@@ -74,7 +99,7 @@ disabled={title.length < 1 || description.length < 1 || isLoading}
 colorScheme="teal"
 variant="solid"
 >
-Add
+Submit
 </Button>
 </Stack>
 </Box>

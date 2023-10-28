@@ -5,7 +5,8 @@ import {
     SimpleGrid,
     Text,
     Badge,
-    FaTrash
+    FaTrash,
+    FaEdit
 } from "@chakra-ui/react";
 import useAuth from "../../hooks/useAuth";
 import {

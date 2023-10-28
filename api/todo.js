@@ -48,10 +48,19 @@ const deleteFromDB = async (collection, docId) => {
     console.log(err);
   }
 };
-
 const deleteTodo = async (docId) => {
   await deleteFromDB("todo", docId);
 };
+const editTodo = async ({ docId, userId, title, description, status }) => {
+  const item = await getFromDB("todo", context.params.id);
+  if(userId == item.user) {
+    await updateDoc(doc(db, "todo", docId), {
+      title: title,
+      description: description,
+      updatedAt: new Date().getTime()
+    });
+  }
+}
 const addEvent = async ({ userId, title, description, date, start, end}) => {
   await addDoc(collection(db, "events"), {
     user: userId,
