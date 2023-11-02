@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebase";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import { deleteContact } from "../api/todo";
 const ContactList = () => {
 const [contacts, setContacts] = React.useState([]);
@@ -21,6 +21,9 @@ useEffect(() => {
   if (!user) {
     setContacts([]);
       return;
+  }
+  if(!contacts) {
+    setContacts([]);
   }
   const q = query(collection(db, "contacts"),
     where("user", "==", user.uid)
@@ -54,6 +57,9 @@ _hover={{ boxShadow: "sm" }}
 >
 <Heading as="h3" fontSize={"xl"}>
 <Link href={`contact/${contact.id}`}>{contact.name}{" "}</Link>
+      <Link float="right" href={`/edit/contact/${contact.id}`}>
+        <FaEdit />
+      </Link>
 <Badge
 color="red.500"
 bg="inherit"

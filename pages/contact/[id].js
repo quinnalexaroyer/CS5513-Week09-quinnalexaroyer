@@ -27,9 +27,11 @@ const ToDoItem = ({d}) => {
       _hover={{ boxShadow: "sm" }}
     >
       <Heading as="h3" fontSize={"xl"}>
-      {d.title}{" "}<br/>
+      {d.name}{" "}<br/>
     </Heading>
-    <Text>{d.description}</Text>
+    <Text>Relationship: {d.relation}</Text>
+    <Text>Email: {d.email}</Text>
+    <Text>Phone: {d.phone}</Text>
   </Box>
   );
 };

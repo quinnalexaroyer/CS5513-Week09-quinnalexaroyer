@@ -54,9 +54,7 @@ const deleteTodo = async (docId) => {
   await deleteFromDB("todo", docId);
 };
 const editTodo = async ({ docId, userId, title, description,status }) => {
-  console.log("BBBBBBBBBB", docId, userId, title, description,status );
   const item = await getFromDB("todo", docId);
-  console.log("GGGGGGGGGGGG", userId, item.props.d.user);
   if(userId == item.props.d.user) {
     await updateDoc(doc(db, "todo", docId), {
       title: title,
@@ -81,6 +79,19 @@ const addEvent = async ({ userId, title, description, date, start, end}) => {
 const deleteEvent = async (docId) => {
   await deleteFromDB("events", docId);
 }
+const editEvent = async ({ docId, userId, title, description, date, start, end }) => {
+  const item = await getFromDB("events", docId);
+  if(userId == item.props.d.user) {
+    await updateDoc(doc(db, "events", docId), {
+      title: title,
+      description: description,
+      date: date,
+      start: start,
+      end: end,
+      updatedAt: new Date().getTime()
+    });
+  }
+};
 const addContact = async ({ userId, name, relation, email, phone}) => {
   await addDoc(collection(db, "contacts"), {
     user: userId,
@@ -95,6 +106,18 @@ const addContact = async ({ userId, name, relation, email, phone}) => {
 const deleteContact = async (docId) => {
   await deleteFromDB("contacts", docId);
 }
+const editContact = async ({ docId, userId, name, relation, email, phone}) => {
+  const item = await getFromDB("contacts", docId);
+  if(userId == item.props.d.user) {
+    await updateDoc(doc(db, "contacts", docId), {
+      name: name,
+      relation: relation,
+      email: email,
+      phone: phone,
+      updatedAt: new Date().getTime()
+    });
+  }
+};
 function tense(date, startTime, endTime) {
   var today = getToday();
   if(date < today) return "past";
@@ -106,4 +129,4 @@ function tense(date, startTime, endTime) {
     else return "present";
   }
 }
-export { addTodo, toggleTodoStatus, deleteTodo, editTodo, addEvent, deleteEvent, addContact, deleteContact, tense };
+export { addTodo, toggleTodoStatus, deleteTodo, editTodo, addEvent, deleteEvent, editEvent, addContact, deleteContact, editContact, tense };

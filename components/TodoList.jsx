@@ -14,41 +14,40 @@ import { db } from "../firebase";
 import { FaToggleOff, FaToggleOn, FaTrash, FaEdit } from "react-icons/fa";
 import { deleteTodo, toggleTodoStatus, editTodo } from "../api/todo";
 const TodoList = () => {
-const [todos, setTodos] = React.useState([]);
-const {  user } = useAuth();
-const toast = useToast();
+  const [todos, setTodos] = React.useState([]);
+  const { user } = useAuth();
+  const toast = useToast();
 
-useEffect(() => {
-if (!user) {
-setTodos([]);
-return;
-}
-  const q = query(collection(db, "todo"),
-    where("user", "==", user.uid)
-  );
-  onSnapshot(q, (querySnapchot) => {
-    let ar = [];
-    querySnapchot.docs.forEach((doc) => {
-      console.log(doc.data());
-      ar.push({ id: doc.id, ...doc.data() });
+  useEffect(() => {
+    if (!user) {
+      setTodos([]);
+      return;
+    }
+    const q = query(collection(db, "todo"),
+      where("user", "==", user.uid)
+    );
+    onSnapshot(q, (querySnapchot) => {
+      let ar = [];
+      querySnapchot.docs.forEach((doc) => {
+        ar.push({ id: doc.id, ...doc.data() });
+      });
+    setTodos(ar);
     });
-  setTodos(ar);
-});
-}, [user]);
-const handleTodoDelete = async (id) => {
-if (confirm("Are you sure you want to delete this todo?")) {
-deleteTodo(id);
-toast({ title: "Todo deleted successfully", status: "success" });
-}
-};
-const handleToggle = async (id, status) => {
-const newStatus = status == "completed" ? "pending" : "completed";
-await toggleTodoStatus({ docId: id, status: newStatus });
-toast({
-title: `Todo marked ${newStatus}`,
-status: newStatus == "completed" ? "success" : "warning",
-});
-};
+  }, [user]);
+  const handleTodoDelete = async (id) => {
+    if (confirm("Are you sure you want to delete this todo?")) {
+      deleteTodo(id);
+      toast({ title: "Todo deleted successfully", status: "success" });
+    }
+  };
+  const handleToggle = async (id, status) => {
+    const newStatus = status == "completed" ? "pending" : "completed";
+    await toggleTodoStatus({ docId: id, status: newStatus });
+    toast({
+      title: `Todo marked ${newStatus}`,
+      status: newStatus == "completed" ? "success" : "warning",
+    });
+  };
 return (
 <Box mt={5}>
 <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>

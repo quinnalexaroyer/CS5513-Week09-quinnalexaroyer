@@ -22,13 +22,11 @@ const db = getFirestore(app);
 export { auth, db };
 
 export async function getFromDB(collection, id) {
-  console.log("AAAAAAAAAA", db, collection, id);
   const item = doc(db, collection, id);
   const itemSnap = await getDoc(item);
   if(itemSnap.exists()) {
     let d = itemSnap.data();
     d.docId = id;
-    console.log("EEEEEEEEEE", d);
     return {props: {d}};
   } else {
     return {props: null};

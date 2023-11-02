@@ -11,7 +11,6 @@ import {
 import useAuth from "../hooks/useAuth";
 import { addTodo, editTodo } from "../api/todo";
 const EditTodo = (props) => {
-  console.log("CCCCCCCCC", props);
   if(Object.keys(props).length === 0) {
     props = {title:"", description:"", status:"pending"};
   }
@@ -50,6 +49,7 @@ if('user' in props) {
   };
   await editTodo(todo);
   setIsLoading(false);
+  toast({ title: "Todo updated successfully", status: "success" });
 } else {
   const todo = {
     title,

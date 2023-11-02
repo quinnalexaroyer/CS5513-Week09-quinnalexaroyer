@@ -9,43 +9,68 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
-import { addEvent } from "../api/todo";
-import { getToday, getTime } from "../api/todo";
-const AddEvent = () => {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [date, setDate] = React.useState();
-  const [start, setStart] = React.useState();
-  const [end, setEnd] = React.useState();
+import { addEvent, editEvent } from "../api/todo";
+const EditEvent = (props) => {
+  if(Object.keys(props).length === 0) {
+    props = {title:"", description:"", date:"", start:"", end:""};
+  }
+  const [title, setTitle] = React.useState(props.title);
+  const [description, setDescription] = React.useState(props.description);
+  const [date, setDate] = React.useState(props.date);
+  const [start, setStart] = React.useState(props.start);
+  const [end, setEnd] = React.useState(props.end);
   const [isLoading, setIsLoading] = React.useState(false);
   const toast = useToast();
   const { isLoggedIn, user } = useAuth();
   const handleEventCreate = async () => {
     if (!isLoggedIn) {
       toast({
-        title: "You must be logged in to create a todo",
+        title: "You must be logged in to create an event",
         status: "error",
         duration: 9000,
         isClosable: true,
       });
       return;
+    } else if('user' in props && props.user != user.uid) {
+      toast({
+      title: "You cannot edit an event belonging to another user",
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+    return;
+  }
+  setIsLoading(true);
+    if('user' in props) {
+      setIsLoading(true);
+      const event = {
+        title,
+        description,
+        date,
+        start,
+        end,
+        docId:props.docId,
+        userId:props.user
+      }
+      await editEvent(event);
+      setIsLoading(false);
+      toast({ title: "Event updated successfully", status: "success" });
+    } else {
+      const event = {
+        title,
+        description,
+        date,
+        start,
+        end,
+        userId:props.user
+      }
+      setTitle("");
+      setDescription("");
+      setDate("");
+      setStart("");
+      setEnd("");
+      toast({ title: "Event created successfully", status: "success" });
     }
-    setIsLoading(true);
-    const event = {
-      userId:user.uid,
-      title,
-      description,
-      date,
-      start,
-      end
-    }
-    await addEvent(event);
-    setTitle("");
-    setDescription("");
-    setDate("");
-    setStart("");
-    setEnd("");
-    toast({ title: "Event created successfully", status: "success" });
   }
   return (
     <Box w="40%" margin={"0 auto"} display="block" mt={5}>
@@ -66,7 +91,7 @@ const AddEvent = () => {
       onChange={(e) => setDate(e.target.value)}
     />
     <Input
-      placeholder="Start Time (24 hr clock)"
+      placeholder="Start Time (24 hr clock) HH:MM"
       value={start}
       onChange={(e) => setStart(e.target.value)}
     />
@@ -81,11 +106,11 @@ const AddEvent = () => {
       colorScheme="teal"
       variant="solid"
     >
-Add
+Submit
 </Button>
 </Stack>
 </Box>
 );
 };
-export default AddEvent;
+export default EditEvent;
 
